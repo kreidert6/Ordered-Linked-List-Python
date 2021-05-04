@@ -9,11 +9,10 @@ class Node:
         Constructor.  Creates a node.
         Instance variables must be next, prev, and item.
         """
-        item =
-        next = 
-        prev =
-        # You write the code for this
-        pass
+        self.item = item
+        self.next = next
+        self.prev = prev
+       
 
 class OrderedLinkedList:
     def __init__(self):
@@ -21,11 +20,11 @@ class OrderedLinkedList:
         Constructor.  Creates an empty ordered list.
         Instance variables must be front, back, and len.
         """
-        front =
-        back =
-        len = 
-        # You write the code for this
-        pass
+
+        self.front = None
+        self.back = None
+        self.len = 0
+        
 
     def insert(self, x):
         """ 
@@ -33,8 +32,36 @@ class OrderedLinkedList:
         (smallest to largest) after the insert.  Duplicates
         are ok.
         """
-        # You write the code for this
-        pass
+        if self.len == 0:
+            self.front = self.back = Node(x)
+            self.len += 1
+
+        else:
+
+            current = self.front 
+            
+            placed = False
+            
+            while not placed:
+                
+                    if x <= current.item:
+                        new_node = Node(x)
+
+                        new_node.prev = current.prev
+                        current.prev.next = new_node
+
+                        current.prev = new_node
+                        new_node.next = current
+                        self.len += 1
+                        
+
+                        placed = True
+
+                    else:
+                        current = current.next
+                            
+                    
+
 
     def __len__(self):
         """ Returns length of list """
