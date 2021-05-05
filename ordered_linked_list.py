@@ -41,24 +41,41 @@ class OrderedLinkedList:
             current = self.front 
             
             placed = False
+            counter = 0
             
-            while not placed:
+            while not placed: 
                 
-                    if x <= current.item:
+                counter +=1
+
+                if x <= current.item:
+                    
+                    if counter == self.len:
+                        if self.len == 1:
+                            new_node = Node(x)
+                            self.front = new_node
+                            new_node.next = current
+                            current.prev = new_node
+                            placed = True
+                            pass
+
                         new_node = Node(x)
-
-                        new_node.prev = current.prev
-                        current.prev.next = new_node
-
-                        current.prev = new_node
-                        new_node.next = current
-                        self.len += 1
-                        
-
+                        new_node.prev = current
+                        current.next = new_node
                         placed = True
+                        pass
 
-                    else:
-                        current = current.next
+                    new_node = Node(x)
+
+                    new_node.prev = current.prev
+                    current.prev.next = new_node
+
+                    current.prev = new_node
+                    new_node.next = current
+                    placed = True
+                    pass
+                   
+                else:
+                    current = current.next
                             
                     
 
