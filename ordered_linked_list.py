@@ -32,50 +32,67 @@ class OrderedLinkedList:
         (smallest to largest) after the insert.  Duplicates
         are ok.
         """
+
+
+        current = self.front    
+        placed = False
+        counter = 0
+
         if self.len == 0:
             self.front = self.back = Node(x)
-            self.len += 1
-
+            placed = True
+            self.len +=1
+        
+        elif self.len == 1:
+            if x <= current.item:
+                new_node = Node(x, current)
+                self.front = new_node
+                current.prev = new_node
+                placed = True
+                self.len +=1
+                
+            else:
+                new_node = Node(x,None, current)
+                current.next = new_node
+                self.back = new_node
+                placed = True
+                self.len +=1
+                   
         else:
-
-            current = self.front 
-            
-            placed = False
-            counter = 0
             
             while not placed: 
                 
-                counter +=1
-                if counter == self.len:
-                        if self.len == 1:
-                            new_node = Node(x)
-                            self.front = new_node
-                            new_node.next = current
-                            current.prev = new_node
-                            placed = True
-                            pass
-                        else:
-                            new_node = Node(x)
-                            new_node.prev = current
-                            current.next = new_node
-                            placed = True
-                            pass
-
+                counter +=1          
+                
                 if x <= current.item:
 
-                    new_node = Node(x)
+                    if counter == 1:
+                        new_front_node = Node(x, current)
+                        self.front = new_front_node
+                        current.prev = new_front_node
+                        placed = True
+                        self.len +=1
+                    else:
 
-                    new_node.prev = current.prev
-                    current.prev.next = new_node
+                        new_node = Node(x,current, current.prev)
+                        current.prev.next = new_node
+                        current.prev = new_node
+        
+                        placed = True
+                        self.len +=1
 
-                    current.prev = new_node
-                    new_node.next = current
-                    placed = True
-                    pass
+                elif counter == self.len and not placed:         
+    
+                        new_node = Node(x,)
+                        new_node.prev = current
+                        current.next = new_node
+                        self.back = new_node
+                        placed = True
+                        self.len +=1
                    
                 else:
                     current = current.next
-                            
+       
                     
 
 
@@ -105,8 +122,77 @@ class OrderedLinkedList:
         an item greater than x, do not continue searching
         the list.
         """
-        # You write the code for this
-        pass
+        
+        current = self.front
+        removed = False
+        
+
+        if self.len == 0:
+            raise ValueError
+
+        elif self.len == 1:
+            if current == x:
+                self.front = None
+                self.back = None
+                self.len -= 1
+            else:
+                raise ValueError
+
+        else:
+
+            while removed == False:
+
+                for i in range(1, self.len + 1):
+
+                    if i == self.len and current.item < x and removed == False:
+                        raise ValueError
+
+                    if current.item > x and removed == False:
+                        raise ValueError
+
+                    elif current.item == x and removed == False:
+                        if i == 1:
+                            if len == 2:
+                                self.front = self.back = current.next
+                                current = self.front
+                                current.next = current.prev = None
+                                self.len -= 1
+                                removed = True
+
+                            else:
+                                self.front = current.next
+                                current.next.prev = None
+                                self.len -= 1
+                                removed = True
+
+                        elif i == self.len:
+                            self.back = current.prev
+                            current.prev.next = None
+                            self.len -= 1
+                            removed = True
+                        
+                        else:
+                            current.prev.next = current.next
+                            current.next.prev = current.prev
+                            self.len -= 1
+                            removed = True
+                        
+                    elif removed == False:
+                        current = current.next
+                        
+        if removed == False:
+            raise ValueError
+
+
+
+                            
+
+
+                        
+
+
+
+
 
     def remove_all(self, x):
         """

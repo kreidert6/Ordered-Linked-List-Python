@@ -26,7 +26,7 @@ def ordered_list_test():
     n8 = 10
     n9 = 200
     n10 = 93
-
+    
     print("Testing insert into empty list\n")
     num_tests += 1
     print(f"list before insert is {str(l)}\n")
@@ -143,6 +143,7 @@ def ordered_list_test():
             num_correct += 1
         else:
             print(f"Incorrect.  SHould be {correct} and len = 7")
+
 
     print("\n***********\nTesting remove from front of list\n")
     num_tests += 1
