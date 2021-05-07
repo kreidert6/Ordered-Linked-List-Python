@@ -257,7 +257,6 @@ class OrderedLinkedList:
         """
         
         current = self.front
-        counter = 0
 
         #if list length is 2 
         if self.len == 2:
@@ -305,56 +304,75 @@ class OrderedLinkedList:
         or other_ordered_list.  You want to just copy the items from their nodes.
         """
 
+        # Create list and booleans 
         merged_list = OrderedLinkedList()
-
         first_done = False
         second_done = False
 
+        # If self or the other list is empty we are done with it
         if self.front == None:
             first_done = True
     
         if other_ordered_list.front == None:
             second_done = True
 
+        # Set the value of the current first, second list items to the front of the lists
         current_first = self.front
         current_second = other_ordered_list.front
-            
+
+        # While both lists aren't done, iterate    
         while not (first_done and second_done):
 
+            # Check if the first list is still not empty and the second list is done, or the item is ready to be placed
             if not first_done and (second_done or current_first.item < current_second.item):
 
+                # Insert item 
                 merged_list.insert(current_first.item)
 
+                # Update current if the next item exists, if not the first list is done
                 if current_first.next != None:
                     current_first = current_first.next
                 else:
                     first_done = True
 
+            # Check if the second list is still not empty and the first list is done, or the item is ready to be placed
             elif not second_done and (first_done or current_first.item > current_second.item):
+                
+                # Insert item 
                 merged_list.insert(current_second.item)
 
+                 # Update current if the next item exists, if not the secondlist is done
                 if current_second.next != None:
                     current_second = current_second.next
                 else:
                     second_done = True
 
             else:
+                # This is when the current numbers are equal
+
+                # There is a special case where they are both none and would fall into this spot
+                # So by making sure current_second isn't none, we know they both aren't none
 
                 if current_second != None:
                     merged_list.insert(current_first.item)
                     merged_list.insert(current_second.item)
 
+                   
+                    # Update current
                     current_first = current_first.next  
+                    current_second = current_second.next
 
+                    # Check if first and second lists are done, if a list is done, set its boolean to true
                     if current_first.next == None:          
                         first_done = True
-                    
-                    current_second = current_second.next
 
                     if current_second.next == None:
                         second_done = True
 
+        # Set the length to the combined length of l1 and 2
         merged_list.len = self.len + other_ordered_list.len
+
+        # Return the merged list that you have created
         return merged_list
 
                
@@ -381,4 +399,48 @@ class OrderedLinkedList:
         or other_ordered_list.  You want to just copy the items from their nodes.
         """
 
-        intersection_list = []
+        # Create list and boolean 
+        intersection_list = OrderedLinkedList()
+        done = False
+
+        # If self or the other list is empty we are done instantly
+        if self.front == None or other_ordered_list.front == None:
+            done = True
+        else:
+
+            # Set the value of the current first, second list items to the front of the lists
+            current_first = self.front
+            current_second = other_ordered_list.front
+       
+
+        # While both lists aren't done, iterate    
+        while not done:
+
+            if current_first.item == current_second.item:
+                
+                # Insert node: doesn't matter if its first or second item because they're the same value
+                same_val = current_first.item
+                intersection_list.insert(same_val)
+
+                # Go through list until the current item becomes a new value or you reach the end of the list
+                while current_first.item == same_val and current_first != None:
+                    current_first = current_first.next
+            
+                # Go through list until the current item becomes a new value or you reach the end of the list
+                while current_second.item == same_val and current_second != None:
+                    current_second = current_second.next
+
+            else:
+                
+                # Depending on which number is bigger, update the current accordingly
+                if current_second.item < current_first.item:
+                    current_second = current_second.next
+                else:
+                    current_first = current_first.next
+
+            # If either are None, it is no longer possible for them to equal the same number and we are done
+            if current_first == None or current_second == None:
+                done = True
+
+        # Return the intersection list that you have created
+        return intersection_list
