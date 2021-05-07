@@ -109,17 +109,13 @@ class OrderedLinkedList:
         removed = False
         
 
-        if self.len == 0:
+        if self.len == 0 or (self.len == 1 and current.item != x ):
             raise ValueError
 
         elif self.len == 1:
             if current.item == x:
-                self.front = None
-                self.back = None
+                self.front = self.back = None
                 removed = True
-                self.len -= 1
-            else:
-                raise ValueError
 
         else:
 
@@ -127,37 +123,28 @@ class OrderedLinkedList:
 
                 for i in range(1, self.len + 1):
 
-                    if i == self.len and current.item < x and removed == False:
-                        raise ValueError
-
-                    if current.item > x and removed == False:
+                    if (i == self.len and current.item < x and removed == False) or current.item > x and removed == False:
                         raise ValueError
 
                     elif current.item == x and removed == False:
                         if i == 1:
                             if len == 2:
-                                self.front = self.back = current.next
-                                current = self.front
-                                current.next = current.prev = None
-                                self.len -= 1
-                                removed = True
+                                self.front = self.back = current.next = current.prev = None
 
                             else:
                                 self.front = current.next
                                 current.next.prev = None
-                                self.len -= 1
-                                removed = True
+
+                            removed = True
 
                         elif i == self.len:
                             self.back = current.prev
                             current.prev.next = None
-                            self.len -= 1
                             removed = True
                         
                         else:
                             current.prev.next = current.next
                             current.next.prev = current.prev
-                            self.len -= 1
                             removed = True
                         
                     elif removed == False:
@@ -165,7 +152,9 @@ class OrderedLinkedList:
                         
         if removed == False:
             raise ValueError
-        
+        else:
+            self.len -= 1 # If we removed something, decrease the length by 1
+
 
     def remove_all(self, x):
         """
