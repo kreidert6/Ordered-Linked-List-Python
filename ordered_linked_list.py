@@ -92,6 +92,7 @@ class OrderedLinkedList:
                    
                 else:
                     current = current.next
+                    
        
                     
 
@@ -131,9 +132,10 @@ class OrderedLinkedList:
             raise ValueError
 
         elif self.len == 1:
-            if current == x:
+            if current.item == x:
                 self.front = None
                 self.back = None
+                removed = True
                 self.len -= 1
             else:
                 raise ValueError
@@ -209,8 +211,64 @@ class OrderedLinkedList:
         the list.
         """
         
-        # You write the code for this
-        pass
+        current = self.front
+        counter = 0
+        
+        if self.len == 0:
+            raise ValueError
+
+        elif self.len == 1:
+            if current.item == x:
+                self.front = None
+                self.back = None
+                self.len -= 1
+            else:
+                raise ValueError
+
+        else:
+            for i in range(self.len):
+
+                counter += 1
+                if counter == self.len and current.item < x:
+                    raise ValueError
+
+                elif current.item == x :
+                    if counter == 1:
+                        if self.len == 2:
+                            self.front = self.back = current.next
+                            current = self.front
+                            current.next = current.prev = None
+                            counter -= 1
+                            self.len -= 1
+
+                        else:
+
+                            if self.len == 1:
+                                self.front = None
+                                self.back = None
+                                self.len -= 1
+                            else:
+                                self.front = current.next
+                                current.next.prev = None
+                                counter -= 1
+                                self.len -= 1
+                           
+                    elif counter == self.len:
+                        self.back = current.prev
+                        current.prev.next = None
+                        counter -= 1
+                        self.len -= 1
+                       
+                    else:
+                        current.prev.next = current.next
+                        current.next.prev = current.prev
+                        counter -= 1
+                        self.len -= 1   
+                
+                if self.len > 1:
+                    current = current.next
+                        
+        
 
     def remove_duplicates(self):
         """
@@ -218,8 +276,32 @@ class OrderedLinkedList:
         one copy of each different item.
         This method must be performed in one pass through list.
         """
-        # You write the code for this
-        pass
+        
+        current = self.front
+        counter = 0
+
+        if self.len == 2:
+            if current.item == current.next.item:
+                current.next = None
+                self.back = self.front
+
+
+        if self.len > 2:
+            for i in range(self.len - 1):
+
+
+                if current.item == current.next.item:
+                    if current.next.next == None:
+                        self.back = current
+                    else:
+                        current.next.next.prev = current
+
+                    current.next = current.next.next 
+                    self.len -= 1
+                else:
+                    current = current.next
+
+
 
     def merge(self, other_ordered_list):
         """
@@ -239,8 +321,59 @@ class OrderedLinkedList:
         or other_ordered_list.  You want to just copy the items from their nodes.
         """
 
-        # You write the code for this
-        pass
+        merged_list = OrderedLinkedList()
+
+        first_done = False
+        second_done = False
+
+        if self.front == None:
+            first_done = True
+    
+        if other_ordered_list.front == None:
+            second_done = True
+
+        current_first = self.front
+        current_second = other_ordered_list.front
+            
+        while not (first_done and second_done):
+
+            if not first_done and (second_done or current_first.item < current_second.item):
+
+                merged_list.insert(current_first.item)
+
+                if current_first.next != None:
+                    current_first = current_first.next
+                else:
+                    first_done = True
+
+            elif not second_done and (first_done or current_first.item > current_second.item):
+                merged_list.insert(current_second.item)
+
+                if current_second.next != None:
+                    current_second = current_second.next
+                else:
+                    second_done = True
+
+            else:
+
+                if current_second != None:
+                    merged_list.insert(current_first.item)
+                    merged_list.insert(current_second.item)
+
+                    current_first = current_first.next  
+
+                    if current_first.next == None:          
+                        first_done = True
+                    
+                    current_second = current_second.next
+
+                    if current_second.next == None:
+                        second_done = True
+
+        merged_list.len = self.len + other_ordered_list.len
+        return merged_list
+
+               
 
     def intersection(self, other_ordered_list):
         """
@@ -264,5 +397,4 @@ class OrderedLinkedList:
         or other_ordered_list.  You want to just copy the items from their nodes.
         """
 
-        # You write the code for this
-        pass
+        intersection_list = []
