@@ -35,9 +35,11 @@ class OrderedLinkedList:
 
         current = self.front    
 
+        #if nothing in list, create node and set it to front and back 
         if self.len == 0:
             self.front = self.back = Node(x)
         
+        #if 1 item in list already, compare it and set it in front of it or behind it
         elif self.len == 1:
             if x <= current.item:
 
@@ -48,23 +50,29 @@ class OrderedLinkedList:
 
                 new_node = Node(x,None, current)
                 current.next = self.back = new_node
-                
+
+        #if list is already longer than 2    
         else:
 
             placed = False
-            while not placed:         
-                if x <= current.item:
+            while not placed:  
 
+                #identifies the location to insert    
+                if x <= current.item:
+                    
+                    #if at the front of the list
                     if self.front == current:
                         new_front_node = Node(x, current)
                         self.front = current.prev = new_front_node    
-                        
+                    
+                    #if not at the front of the list
                     else:
                         new_node = Node(x,current, current.prev)
                         current.prev.next = current.prev = new_node
 
                     placed = True
 
+                #placing at the end of the list
                 elif current == self.back and not placed:         
     
                         new_node = Node(x,)
@@ -72,6 +80,8 @@ class OrderedLinkedList:
                         current.next = self.back = new_node
 
                         placed = True  
+
+                #moves to next item in the list
                 else:
                     current = current.next  
 
@@ -108,25 +118,32 @@ class OrderedLinkedList:
         current = self.front
         removed = False
         
-
+        #if there is nothing in the list
         if self.len == 0 or (self.len == 1 and current.item != x ):
             raise ValueError
 
+        #if the list is length of 1
         elif self.len == 1:
             if current.item == x:
                 self.front = self.back = None
                 removed = True
 
+
+        #if the list length is bigger than 1
         else:
 
             while removed == False:
 
                 for i in range(1, self.len + 1):
 
+                    #if x was not found in the list
                     if (i == self.len and current.item < x and removed == False) or current.item > x and removed == False:
                         raise ValueError
 
+                    #if x is found in the list
                     elif current.item == x and removed == False:
+
+                        #if x is the first item in the list
                         if i == 1:
                             if len == 2:
                                 self.front = self.back = current.next = current.prev = None
@@ -137,19 +154,23 @@ class OrderedLinkedList:
 
                             removed = True
 
+                        #if x is the last item in the list
                         elif i == self.len:
                             self.back = current.prev
                             current.prev.next = None
                             removed = True
                         
+                        #if x is in the middle of the list
                         else:
                             current.prev.next = current.next
                             current.next.prev = current.prev
                             removed = True
-                        
+                    
+                    #checks next number in th list
                     elif removed == False:
                         current = current.next
-                        
+
+        #if x is never found               
         if removed == False:
             raise ValueError
         else:
@@ -173,27 +194,36 @@ class OrderedLinkedList:
         
         current = self.front
         
+        #if the list is empty or isn't in list with length 1
         if self.len == 0 or (self.len == 1 and current.item != x):
             raise ValueError
         
+        #if the length of list is 1
         elif self.len == 1:
             if current.item == x:
                 self.front = self.back = None
                 self.len -= 1
 
+        #if length of list is more than 1
         else:
             for i in range(self.len):
 
                 if current == self.back and current.item < x:
                     raise ValueError
 
+                #when x is found in list
                 elif current.item == x :
+
+                    #if x is the first item in list
                     if current == self.front:
+
+                        #deletes the first item in a list with length 2
                         if self.len == 2:
                             self.front = self.back = current.next
                             current = self.front
                             current.next = current.prev = None
 
+                        #deletes the first item
                         else:
 
                             if self.len == 1:
@@ -202,10 +232,12 @@ class OrderedLinkedList:
                                 self.front = current.next
                                 current.next.prev = None
                            
+                    #deletes last item in list
                     elif current == self.back:
                         self.back = current.prev
                         current.prev.next = None
-                       
+
+                    #deletes item of x in middle of list
                     else:
                         current.prev.next = current.next
                         current.next.prev = current.prev
@@ -227,16 +259,19 @@ class OrderedLinkedList:
         current = self.front
         counter = 0
 
+        #if list length is 2 
         if self.len == 2:
+
+            #if the items are duplicates then remove one
             if current.item == current.next.item:
                 current.next = None
                 self.back = self.front
 
-
+        #if list length is bigger than 2
         if self.len > 2:
             for i in range(self.len - 1):
 
-
+                #checking for duplicates and deleting one
                 if current.item == current.next.item:
                     if current.next.next == None:
                         self.back = current
@@ -245,6 +280,8 @@ class OrderedLinkedList:
 
                     current.next = current.next.next 
                     self.len -= 1
+                
+                #checks the next item in list
                 else:
                     current = current.next
 
