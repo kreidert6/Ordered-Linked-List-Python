@@ -165,9 +165,7 @@ class OrderedLinkedList:
                         
         if removed == False:
             raise ValueError
-
-
-
+        
 
     def remove_all(self, x):
         """
@@ -186,16 +184,13 @@ class OrderedLinkedList:
         
         current = self.front
         
-        if self.len == 0:
+        if self.len == 0 or (self.len == 1 and current.item != x):
             raise ValueError
-
+        
         elif self.len == 1:
             if current.item == x:
-                
                 self.front = self.back = None
                 self.len -= 1
-            else:
-                raise ValueError
 
         else:
             for i in range(self.len):
@@ -209,27 +204,24 @@ class OrderedLinkedList:
                             self.front = self.back = current.next
                             current = self.front
                             current.next = current.prev = None
-                            self.len -= 1
 
                         else:
 
                             if self.len == 1:
                                 self.front = self.back = None
-                                self.len -= 1
                             else:
                                 self.front = current.next
                                 current.next.prev = None
-                                self.len -= 1
                            
                     elif current == self.back:
                         self.back = current.prev
                         current.prev.next = None
-                        self.len -= 1
                        
                     else:
                         current.prev.next = current.next
                         current.next.prev = current.prev
-                        self.len -= 1   
+                    
+                    self.len -= 1 # Remove one from the length because an item has been removed
                 
                 if self.len > 1:
                     current = current.next
