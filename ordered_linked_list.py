@@ -168,14 +168,6 @@ class OrderedLinkedList:
 
 
 
-                            
-
-
-                        
-
-
-
-
 
     def remove_all(self, x):
         """
@@ -193,15 +185,14 @@ class OrderedLinkedList:
         """
         
         current = self.front
-        counter = 0
         
         if self.len == 0:
             raise ValueError
 
         elif self.len == 1:
             if current.item == x:
-                self.front = None
-                self.back = None
+                
+                self.front = self.back = None
                 self.len -= 1
             else:
                 raise ValueError
@@ -209,41 +200,35 @@ class OrderedLinkedList:
         else:
             for i in range(self.len):
 
-                counter += 1
-                if counter == self.len and current.item < x:
+                if current == self.back and current.item < x:
                     raise ValueError
 
                 elif current.item == x :
-                    if counter == 1:
+                    if current == self.front:
                         if self.len == 2:
                             self.front = self.back = current.next
                             current = self.front
                             current.next = current.prev = None
-                            counter -= 1
                             self.len -= 1
 
                         else:
 
                             if self.len == 1:
-                                self.front = None
-                                self.back = None
+                                self.front = self.back = None
                                 self.len -= 1
                             else:
                                 self.front = current.next
                                 current.next.prev = None
-                                counter -= 1
                                 self.len -= 1
                            
-                    elif counter == self.len:
+                    elif current == self.back:
                         self.back = current.prev
                         current.prev.next = None
-                        counter -= 1
                         self.len -= 1
                        
                     else:
                         current.prev.next = current.next
                         current.next.prev = current.prev
-                        counter -= 1
                         self.len -= 1   
                 
                 if self.len > 1:
