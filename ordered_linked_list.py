@@ -34,11 +34,9 @@ class OrderedLinkedList:
         """
 
         current = self.front    
-        placed = False
 
         if self.len == 0:
             self.front = self.back = Node(x)
-            placed = True
         
         elif self.len == 1:
             if x <= current.item:
@@ -50,10 +48,10 @@ class OrderedLinkedList:
 
                 new_node = Node(x,None, current)
                 current.next = self.back = new_node
-
-            placed = True  
                 
         else:
+
+            placed = False
             while not placed:         
                 if x <= current.item:
 
