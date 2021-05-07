@@ -1,6 +1,6 @@
 # File: ordered_list.py
-# Date: April 19, 2021
-# Author: John Glick
+# Date: May 6, 2021
+# Authors: Griffin Palmeri and Tyler Kreider
 # Description: Ordered linked list.
 
 class Node:
@@ -33,68 +33,51 @@ class OrderedLinkedList:
         are ok.
         """
 
-
         current = self.front    
         placed = False
-        counter = 0
 
         if self.len == 0:
             self.front = self.back = Node(x)
             placed = True
-            self.len +=1
         
         elif self.len == 1:
             if x <= current.item:
+
                 new_node = Node(x, current)
-                self.front = new_node
-                current.prev = new_node
-                placed = True
-                self.len +=1
-                
+                self.front =  current.prev = new_node
+
             else:
+
                 new_node = Node(x,None, current)
-                current.next = new_node
-                self.back = new_node
-                placed = True
-                self.len +=1
-                   
+                current.next = self.back = new_node
+
+            placed = True  
+                
         else:
-            
-            while not placed: 
-                
-                counter +=1          
-                
+            while not placed:         
                 if x <= current.item:
 
-                    if counter == 1:
+                    if self.front == current:
                         new_front_node = Node(x, current)
-                        self.front = new_front_node
-                        current.prev = new_front_node
-                        placed = True
-                        self.len +=1
+                        self.front = current.prev = new_front_node    
+                        
                     else:
-
                         new_node = Node(x,current, current.prev)
-                        current.prev.next = new_node
-                        current.prev = new_node
-        
-                        placed = True
-                        self.len +=1
+                        current.prev.next = current.prev = new_node
 
-                elif counter == self.len and not placed:         
+                    placed = True
+
+                elif current == self.back and not placed:         
     
                         new_node = Node(x,)
                         new_node.prev = current
-                        current.next = new_node
-                        self.back = new_node
-                        placed = True
-                        self.len +=1
-                   
+                        current.next = self.back = new_node
+
+                        placed = True  
                 else:
-                    current = current.next
-                    
-       
-                    
+                    current = current.next  
+
+        self.len += 1  # Add one to the length because we added one node   
 
 
     def __len__(self):
