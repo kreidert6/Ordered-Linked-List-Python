@@ -1,0 +1,6 @@
+Grading:
+Merge correct.  Nice job.: 10
+Intersection correct.  Nice job.: 10
+Total Deductions: 20
+Final Score: 120
+  Nice Program!
